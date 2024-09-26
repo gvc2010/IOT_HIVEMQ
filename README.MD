@@ -1,6 +1,4 @@
-# LOJA DE VINHOS
-
-Este projeto cria o banco de dados Loja de Vinhos utilizando o MySQL. O objetivo é armazenar informações sobre vinhos, vinícolas e as regiões a que pertencem. As tarefas envolvem a criação do modelo físico, a inserção de registros, a consulta de dados, e a configuração de um usuário com permissões limitadas.
+O objetivo do projeto é desenvolver um sistema de IoT usando um microcontrolador ESP32 programado em MicroPython para simular uma aplicação em smart city. O sistema inclui o uso de sensores ou atuadores, comunicação MQTT com o HiveMQ, e um painel de controle usando Node-RED.
 
 ## 1. Configuração do ESP32 no WokWi
 ```bash
