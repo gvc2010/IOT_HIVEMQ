@@ -1,6 +1,8 @@
 O objetivo do projeto é desenvolver um sistema de IoT usando um microcontrolador ESP32 programado em MicroPython para simular uma aplicação em smart city. O sistema inclui o uso de sensores ou atuadores, comunicação MQTT com o HiveMQ, e um painel de controle usando Node-RED.
 
 ## 1. Configuração do ESP32 no WokWi
+![wOKWI](assets/Wokwi.png)
+
 ```bash
 Acesse o WokWi e escolha o ESP32 como microcontrolador.
 Configure os sensores no ambiente de simulação:
