@@ -97,11 +97,13 @@ Message: O que preferir
 
 ## 5. Dashboard no Node-RED
 ```bash
-Instale o Node-RED em sua máquina local ou use uma instância hospedada.
+Instale o Node-RED em sua máquina local ou use uma instância Cloud. (Será instalado na máquina local, caso queira instalar https://nodejs.org/pt)
 Abra o editor do Node-RED e configure os nós MQTT para assinar os tópicos de temperatura, umidade e atuador.
 
 Adicionar um nó de entrada MQTT:
+```
 
+```bash
 Conecte-se ao broker broker.hivemq.com.
 Assine o tópico cidade/inteligente/temperatura e cidade/inteligente/umidade para visualizar os dados.
 Visualização no Dashboard:
