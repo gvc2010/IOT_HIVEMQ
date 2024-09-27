@@ -3,82 +3,77 @@ O objetivo do projeto é desenvolver um sistema de IoT usando um microcontrolado
 ## 1. Configuração do ESP32 no WokWi
 ```bash
 Acesse o WokWi e escolha o ESP32 como microcontrolador.
-Configure os sensores/atuadores no ambiente de simulação:
-Se você escolher um sensor de temperatura, adicione o sensor DHT22.
-Se for um LED, adicione-o para simular a iluminação inteligente.
-Configure o código em MicroPython para leitura dos sensores e controle dos atuadores.
+Configure os sensores no ambiente de simulação:
+Se você escolher um sensor de temperatura, adicione o sensor DHT22 ou DHT11.
+No caso deste projeto será usado um PIR, Sensor de Movimento.
+Configure o código em MicroPython para ler o Sensor que escolher
 ```
 
 ## 2. Programação em MicroPython
 ```bash
 import network
-from umqttsimple import MQTTClient
+import machine
 import time
-import dht
-from machine import Pin
+from umqtt.robust import MQTTClient  
 
-# Configurações de Wi-Fi
-nome_wifi = 'seu_ssid_wifi'
-senha_wifi = 'sua_senha_wifi'
+# Wifi padrão do WOKWI 
+ssid = 'Wokwi-GUEST'
+password = ''
 
-# Configurações do Broker MQTT
-servidor_mqtt = 'broker.hivemq.com'
-id_cliente = 'ESP32'
-topico_publicacao_temp = 'cidade/inteligente/temperatura'
-topico_publicacao_umid = 'cidade/inteligente/umidade'
+# Configurações do MQTT - Broker Gratuito
+broker = 'broker.hivemq.com'
+topic = 'cidade/inteligente/movimento'
 
-# Configuração do DHT11
-sensor_dht = dht.DHT11(Pin(15))  # Define o sensor no pino 15 do ESP32
+# Configuração do ESP32
+pir_sensor = machine.Pin(13, machine.Pin.IN)
+led = machine.Pin(2, machine.Pin.OUT)
+counter = 0
 
-def conectar_wifi():
-    estacao = network.WLAN(network.STA_IF)
-    estacao.active(True)
-    estacao.connect(nome_wifi, senha_wifi)
+# Função para conectar ao Wi-Fi
+def connect_wifi():
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    wlan.connect(ssid, password)
 
-    while not estacao.isconnected():
+    while not wlan.isconnected():
         time.sleep(1)
+    print("Conectado ao Wi-Fi")
 
-def conectar_e_assinar():
-    cliente = MQTTClient(id_cliente, servidor_mqtt)
-    cliente.connect()
-    return cliente
+# Função para conectar ao MQTT
+def connect_mqtt():
+    client = MQTTClient("ESP32", broker)
+    client.connect()
+    print("Conectado ao MQTT")
+    return client
 
-def principal():
-    conectar_wifi()
-    cliente = conectar_e_assinar()
+# Conecta ao Wi-Fi e ao MQTT
+connect_wifi()
+mqtt_client = connect_mqtt()
 
-    while True:
-        try:
-            # Leitura de temperatura e umidade do DHT11
-            sensor_dht.measure()
-            temperatura = sensor_dht.temperature()
-            umidade = sensor_dht.humidity()
-
-            # Publicar os dados no MQTT
-            cliente.publish(topico_publicacao_temp, str(temperatura))
-            cliente.publish(topico_publicacao_umid, str(umidade))
-
-            print(f"Temperatura: {temperatura}°C, Umidade: {umidade}%")
-
-        except OSError as e:
-            print("Erro ao ler o sensor DHT11.")
-
-        time.sleep(10)
-
-if __name__ == "__main__":
-    principal()
-
+while True:
+    if pir_sensor.value() == 1:
+        counter += 1
+        print(f"Movimento detectado! Contador: {counter}")
+        mqtt_client.publish(topic, f"Movimento detectado! Contagem: {counter}")
+        led.on()  # Liga o LED
+    else:
+        print("Sem movimento...")
+        mqtt_client.publish(topic, "Sem movimento...")
+        led.off()  # Desliga o LED
+    time.sleep(5)  # Intervalo de 5 segundo
 ```
 
 ## 3. Integração dos Sensores
 ```bash
-Sensores e Atuadores Utilizados:
-DHT11: Leitura de temperatura e umidade.
+Sensores  Utilizados:
+PIR: Sensor para Leitura do Movimento.
 LED: Controle de iluminação inteligente ou sinalização.
-Funções dos Sensores e Atuadores no Contexto de Smart City:
 
-DHT11: Pode ser usado para monitoramento ambiental em estufas ou sistemas de controle climático.
-LED: Simulação de iluminação pública inteligente, onde o LED pode ser ligado ou desligado remotamente com base em condições ou comandos manuais.
+Funções do Sensor no Contexto de Smart City:
+
+Segurança: Monitoramento de áreas públicas ou privadas, como parques ou estacionamentos, para identificar presença de atividasdes suspeitas.
+Iluminação : Controle de iluminação em locais públicos e privados, acendendo luzes quando há movimento e apagando quando não há, economizando energia.
+Gestão de tráfego: Detectar a presença de pedestres em faixas de pedestres, otimizando semáforos e sistemas de tráfego.
 ```
 
 ## 4. Conectividade e Controle Remoto via MQTT
