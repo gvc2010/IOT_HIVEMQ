@@ -8,7 +8,8 @@ Acesse o WokWi e escolha o ESP32 como microcontrolador.
 Configure os sensores no ambiente de simulação:
 Se você escolher um sensor de temperatura, adicione o sensor DHT22 ou DHT11.
 No caso deste projeto será usado um PIR, Sensor de Movimento.
-Configure o código em MicroPython para ler o Sensor que escolher
+Configure o código em MicroPython para ler o Sensor que escolher E clique no Botão de PLAY/RUN.
+Se estiver funcionando vai printar no terminal do Wokwi
 ```
 
 ## 2. Programação em MicroPython
