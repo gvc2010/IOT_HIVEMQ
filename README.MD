@@ -11,7 +11,7 @@ No caso deste projeto será usado um PIR, Sensor de Movimento.
 Configure o código em MicroPython para ler o Sensor que escolher E clique no Botão de PLAY/RUN.
 Se estiver funcionando vai printar no terminal do Wokwi
 ```
-
+![200OK](assets/200OK.png)
 ## 2. Programação em MicroPython
 ```bash
 import network
