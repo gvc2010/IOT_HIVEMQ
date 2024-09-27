@@ -77,6 +77,8 @@ Gestão de tráfego: Detectar a presença de pedestres em faixas de pedestres, o
 ```
 
 ## 4. Conectividade e Controle Remoto via MQTT
+![MQTT](assets/logo.png)
+
 
 ```bash
 Acesse o HiveMQ WebSocket Client.
