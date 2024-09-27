@@ -91,8 +91,9 @@ Topic to subscribe: cidade/inteligente/temperatura
 Topic to subscribe: cidade/inteligente/umidade
 Para controlar o LED, publique no tópico de controle:
 Topic to publish: cidade/inteligente/atuador
-Message: ligar_led ou desligar_led.
+Message: O que preferir
 ```
+![MQTT200](assets/MQTT200.png)
 
 ## 5. Dashboard no Node-RED
 ```bash
