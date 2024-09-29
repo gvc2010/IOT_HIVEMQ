@@ -92,13 +92,13 @@ Topic to publish: cidade/inteligente/movimento
 Message: O que preferir
 ```
 ![MQTT200](assets/MQTT200.png)
+![Mosquitto200](assets/Mosquitto.png)
 
 ## 5. Dashboard no Node-RED
 ```bash
 Instale o Node-RED em sua máquina local ou use uma instância Cloud. (Será instalado na máquina local, caso queira instalar https://nodejs.org/pt)
-Abra o editor do Node-RED e configure os nós MQTT para assinar os tópicos de temperatura, umidade e atuador.
+Abra o editor do Node-RED e configure os nós MQTT para assinar os tópicos de movimento.
 
-Adicionar um nó de entrada MQTT:
 ```
 
-
+![Nodered](assets/node.png)
