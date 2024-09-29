@@ -1,4 +1,4 @@
-O objetivo do projeto é desenvolver um sistema de IoT usando um microcontrolador ESP32 programado em MicroPython para simular uma aplicação em smart city. O sistema inclui o uso de sensores ou atuadores, comunicação MQTT com o HiveMQ, e um painel de controle usando Node-RED.
+O objetivo do projeto é desenvolver um sistema de IoT usando um microcontrolador ESP32 programado em MicroPython para simular uma aplicação em smart city. O sistema inclui o uso de sensores , comunicação MQTT com o Mosquitto, e um painel de controle usando Node-RED.
 
 ## 1. Configuração do ESP32 no WokWi
 ![wOKWI](assets/Wokwi.png)
@@ -12,6 +12,7 @@ Configure o código em MicroPython para ler o Sensor que escolher E clique no Bo
 Se estiver funcionando vai printar no terminal do Wokwi
 ```
 ![200OK](assets/200OK.png)
+
 ## 2. Programação em MicroPython
 ```bash
 import network
@@ -23,14 +24,13 @@ from umqtt.robust import MQTTClient
 ssid = 'Wokwi-GUEST'
 password = ''
 
-# Configurações do MQTT - Broker Gratuito
-broker = 'broker.hivemq.com'
+# Configurações do MQTT
+broker = 'test.mosquitto.org'
 topic = 'cidade/inteligente/movimento'
 
 # Configuração do ESP32
 pir_sensor = machine.Pin(13, machine.Pin.IN)
 led = machine.Pin(2, machine.Pin.OUT)
-counter = 0
 
 # Função para conectar ao Wi-Fi
 def connect_wifi():
@@ -55,16 +55,15 @@ mqtt_client = connect_mqtt()
 
 while True:
     if pir_sensor.value() == 1:
-        counter += 1
-        print(f"Movimento detectado! Contador: {counter}")
-        mqtt_client.publish(topic, f"Movimento detectado! Contagem: {counter}")
-        led.on()  # Liga o LED
+        print("Movimento detectado!")
+        mqtt_client.publish(topic, "Movimento detectado!")
+        led.on()  # Liga o LED quando movimento é detectado
     else:
         print("Sem movimento...")
         mqtt_client.publish(topic, "Sem movimento...")
-        led.off()  # Desliga o LED
-    time.sleep(5)  # Intervalo de 5 segundo
-```
+        led.off()  # Desliga o LED quando não há movimento
+    time.sleep(3)  # Intervalo de 3 segundos entre leituras
+
 
 ## 3. Integração dos Sensores
 ```bash
@@ -79,18 +78,17 @@ Iluminação : Controle de iluminação em locais públicos e privados, acendend
 Gestão de tráfego: Detectar a presença de pedestres em faixas de pedestres, otimizando semáforos e sistemas de tráfego.
 ```
 
-## 4. Conectividade e Controle Remoto via MQTT
+## 4. Conectividade e Controle Remoto via Mosquitto ou HiveMQ
 ![MQTT](assets/HIVEMQ.png)
 
 
 ```bash
-Acesse o HiveMQ WebSocket Client.
-Conecte-se ao broker inserindo broker.hivemq.com no campo Host e clique em Connect.
-Assine os tópicos que você configurou no código do ESP32 para receber as leituras de temperatura e umidade:
-Topic to subscribe: cidade/inteligente/temperatura
-Topic to subscribe: cidade/inteligente/umidade
+Acesse o Servidor de Teste do Mosquitto ou HiveMQ.
+Conecte-se ao broker.
+Assine os tópicos que você configurou no código do ESP32 para receber as leituras de movimento:
+Topic to subscribe: cidade/inteligente/movimento
 Para controlar o LED, publique no tópico de controle:
-Topic to publish: cidade/inteligente/atuador
+Topic to publish: cidade/inteligente/movimento
 Message: O que preferir
 ```
 ![MQTT200](assets/MQTT200.png)
@@ -103,18 +101,4 @@ Abra o editor do Node-RED e configure os nós MQTT para assinar os tópicos de t
 Adicionar um nó de entrada MQTT:
 ```
 
-```bash
-Conecte-se ao broker broker.hivemq.com.
-Assine o tópico cidade/inteligente/temperatura e cidade/inteligente/umidade para visualizar os dados.
-Visualização no Dashboard:
-
-Adicione gráficos para visualizar as leituras de temperatura e umidade em tempo real.
-Para controle, adicione um botão para enviar comandos MQTT ao tópico cidade/inteligente/atuador para ligar ou desligar o LED.
-Exemplo de Configuração no Node-RED:
-Gráfico de Temperatura:
-Usar o nó MQTT In para se inscrever no tópico cidade/inteligente/temperatura.
-Conectar a um nó de gráfico para exibir as leituras de temperatura ao longo do tempo.
-Botão de Controle de LED:
-Usar o nó Button no dashboard, e quando clicado, ele deve publicar a mensagem ligar_led ou desligar_led no tópico cidade/inteligente/atuador.
-```
 
