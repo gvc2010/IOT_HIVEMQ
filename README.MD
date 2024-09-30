@@ -70,13 +70,12 @@ while True:
 Sensores  Utilizados:
 PIR: Sensor para Leitura do Movimento.
 LED: Controle de iluminação inteligente ou sinalização.
-
+```
 Funções do Sensor no Contexto de Smart City:
 
 Segurança: Monitoramento de áreas públicas ou privadas, como parques ou estacionamentos, para identificar presença de atividasdes suspeitas.
 Iluminação : Controle de iluminação em locais públicos e privados, acendendo luzes quando há movimento e apagando quando não há, economizando energia.
 Gestão de tráfego: Detectar a presença de pedestres em faixas de pedestres, otimizando semáforos e sistemas de tráfego.
-```
 
 ## 4. Conectividade e Controle Remoto via Mosquitto ou HiveMQ
 ![MQTT](assets/HIVEMQ.png)
